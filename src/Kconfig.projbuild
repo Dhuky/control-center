@@ -1,0 +1,9 @@
+menu "Project Configuration"
+
+    config SET_TIME
+        bool "Configurar manualmente data e hora no RTC"
+        default n
+        help
+            Selecione esta opção para habilitar o ajuste manual do tempo no RTC
+
+ endmenu

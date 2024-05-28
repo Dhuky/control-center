@@ -1,0 +1,12 @@
+{
+    "files.associations": {
+        "ds1307.h": "c",
+        "i2cdev.h": "c",
+        "dht_espidf.h": "c",
+        "rmt.h": "c",
+        "freertos.h": "c",
+        "ili9340.h": "c",
+        "system_error": "c",
+        "lora.h": "c"
+    }
+}
