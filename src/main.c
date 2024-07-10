@@ -29,7 +29,7 @@ void app_main() {
 
 	initialize_lora_module();
 
-	xTaskCreate(ILI9341, "ILI9341", 1024*6, NULL, 5, NULL);
+	//xTaskCreate(ILI9341, "ILI9341", 1024*6, NULL, 5, NULL);
 
     xTaskCreate(&task_rx, "task_rx", 1024*3, NULL, 2, NULL);
 
@@ -349,26 +349,42 @@ esp_err_t custom_event_handler(esp_http_client_event_handle_t evt) {
 
 void initialize_lora_module(){
 
+	ESP_LOGI(LORA, "Initializing LoRa module");
 	if (lora_init() == 0) {
 		ESP_LOGE(LORA, "Does not recognize the module");
 		while(1) {
-			vTaskDelay(1);
+			ESP_LOGI(LORA, "Stuck in error loop - LoRa module not recognized");
+			vTaskDelay(pdMS_TO_TICKS(1000)); //vTaskDelay(1);
 		}
 	}
     ESP_LOGI(LORA, "Frequency is 915MHz");
 	lora_set_frequency(915e6); // 915MHz
+	//esp_task_wdt_reset();
+	vTaskDelay(pdMS_TO_TICKS(100));
+
     lora_enable_crc();
+	//esp_task_wdt_reset();
+    vTaskDelay(pdMS_TO_TICKS(100));  // Adiciona um pequeno delay de 100ms
 	int cr = 1;
 	int bw = 7;
 	int sf = 7;
 
     lora_set_coding_rate(cr);
 	ESP_LOGI(LORA, "coding_rate=%d", cr);
+	//esp_task_wdt_reset();
+	vTaskDelay(pdMS_TO_TICKS(100));
+
 	lora_set_bandwidth(bw);
 	ESP_LOGI(LORA, "bandwidth=%d", bw);
+	//esp_task_wdt_reset();
+	vTaskDelay(pdMS_TO_TICKS(100));
+	
 	lora_set_spreading_factor(sf);
 	ESP_LOGI(LORA, "spreading_factor=%d", sf);
+	//esp_task_wdt_reset();
+	vTaskDelay(pdMS_TO_TICKS(100));
 
+	ESP_LOGI(LORA, "LoRa module initialized successfully");
 }
 
 void DHT11_sensor(){ //Configurações do sensor de temperatura e umidade
@@ -480,17 +496,17 @@ void task_ds1307(){//Configurações de data e hora locais
 	strcpy((char *)datetime, "Aguarde...");//char datetime[256];
     i2c_dev_t i2c_dev;
     memset(&i2c_dev, 0, sizeof(i2c_dev_t));
-    ESP_ERROR_CHECK(ds1307_init_desc(&i2c_dev, 0, 9, 10));
+    ESP_ERROR_CHECK(ds1307_init_desc(&i2c_dev, 0, 21, 22));//lolin_s3_pro 9 sda, 10scl - - devkit v1 21sda 22scl
 
 	//#ifdef CONFIG_SET_TIME
 	if(SET_TIME){
         struct tm time = {
             .tm_year = 124, //(2022 - 1900)
-            .tm_mon  = 5,  
-            .tm_mday = 1,
-            .tm_hour = 15,
-			.tm_wday = 3,
-            .tm_min  = 41,
+            .tm_mon  = 7,   //(1 a 12)
+            .tm_mday = 8,   
+            .tm_hour = 17, 
+			.tm_wday = 2,  //(1 a 7)
+            .tm_min  = 11,
             .tm_sec  = 0
         };
         ESP_ERROR_CHECK(ds1307_set_time(&i2c_dev, &time));

@@ -1,2 +1,2 @@
-#define WIFI_SSID "brisa-3132794"
-#define WIFI_PASSWORD "nr9dnhsq"
+#define WIFI_SSID "Newbie-on"
+#define WIFI_PASSWORD "9373Aa@3"

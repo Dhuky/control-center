@@ -67,11 +67,11 @@
 #define TIMEOUT_RESET                  100
 
 
-#define LORA_HOST SPI3_HOST
-#define LORA_SCLK_GPIO 8
-#define LORA_MOSI_GPIO 18
-#define LORA_MISO_GPIO 17
-#define LORA_CS_GPIO 16
+#define LORA_HOST SPI2_HOST 
+#define LORA_SCLK_GPIO 18
+#define LORA_MOSI_GPIO 23
+#define LORA_MISO_GPIO 19
+#define LORA_CS_GPIO 5
 
 // SPI Stuff
 #if CONFIG_SPI2_HOST
